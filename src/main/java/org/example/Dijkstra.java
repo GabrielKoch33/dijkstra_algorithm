@@ -25,6 +25,10 @@ public class Dijkstra {
         this.listaAdjacencia.get(aresta.getDestino()).add(new Aresta(nomeVertice, aresta.getCusto()));
     }
 
+    public int retornaCusto(String verticeAtual) {
+        this.hashMenorCusto.get(verticeAtual);
+    }
+
     public void atualizaMenorCusto(String nomeVertice, int novoMenorCusto) {
         this.hashMenorCusto.replace(nomeVertice,novoMenorCusto);
     }
@@ -119,8 +123,8 @@ public class Dijkstra {
      * então fosse acessado a classe Aresta e seus construtores, etc.
      * **/
     static class Aresta {
-        private int custo;
-        private String destino;
+        private final int custo;
+        private final String destino;
 
         public Aresta(String destino, int custo) {
             this.destino = destino;
@@ -137,7 +141,7 @@ public class Dijkstra {
     }
 
     static class Par {
-        private String nomeVertice;
+        private final String nomeVertice;
         private int custoAcumulado;
 
         public Par(String nomeVertice, int menorCustoAcumulado) {
@@ -162,7 +166,25 @@ public class Dijkstra {
 
         String verticeOrigem = lerInput.nextLine();
         String verticeDestino = lerInput.nextLine();
+        String verticeAtual = verticeOrigem;
+
 
         dijkstra.atualizaMenorCusto(verticeOrigem, 0);
+
+
+        while (true) {
+            // Pegamos todos os vizinhos do vértice atual e botamos na fila de prioridade onde serão organizados conforme
+            //  o custo
+            for (Aresta aresta : dijkstra.listaAdjacencia.get(verticeOrigem)) {
+                dijkstra.filaDePrioridade.add(new Par(aresta.getDestino(), aresta.getCusto()));
+            }
+
+            for (Aresta aresta : dijkstra.listaAdjacencia.get(verticeOrigem)) {
+                if ((aresta.getCusto() + dijkstra.retornaCusto(verticeAtual)) < dijkstra.retornaCusto(aresta.getDestino())) {
+                    // Inserir lógica de "Relaxar" vértice
+                    continue;
+                }
+            }
+        }
     }
 }
