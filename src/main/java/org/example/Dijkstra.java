@@ -26,7 +26,7 @@ public class Dijkstra {
     }
 
     public int retornaCusto(String verticeAtual) {
-        this.hashMenorCusto.get(verticeAtual);
+        return this.hashMenorCusto.get(verticeAtual);
     }
 
     public void atualizaMenorCusto(String nomeVertice, int novoMenorCusto) {
@@ -160,31 +160,28 @@ public class Dijkstra {
 
     public static void main(String[] args) {
         Scanner lerInput = new Scanner(System.in);
-        Dijkstra dijkstra = new Dijkstra();
+        Dijkstra d = new Dijkstra();
 
-        dijkstra.criaTudo();
+        d.criaTudo();
 
         String verticeOrigem = lerInput.nextLine();
-        String verticeDestino = lerInput.nextLine();
         String verticeAtual = verticeOrigem;
+        String verticeDestino = lerInput.nextLine();
 
-
-        dijkstra.atualizaMenorCusto(verticeOrigem, 0);
-
+        Par va = new Par(verticeOrigem,0);
+        d.atualizaMenorCusto(verticeOrigem, 0);
 
         while (true) {
-            // Pegamos todos os vizinhos do vértice atual e botamos na fila de prioridade onde serão organizados conforme
-            //  o custo
-            for (Aresta aresta : dijkstra.listaAdjacencia.get(verticeOrigem)) {
-                dijkstra.filaDePrioridade.add(new Par(aresta.getDestino(), aresta.getCusto()));
-            }
+            for (Aresta aresta : d.listaAdjacencia.get(verticeAtual)) {
+                String arestaDestino = aresta.getDestino();
+                int soma = d.hashMenorCusto.get(verticeAtual) + aresta.getCusto();
 
-            for (Aresta aresta : dijkstra.listaAdjacencia.get(verticeOrigem)) {
-                if ((aresta.getCusto() + dijkstra.retornaCusto(verticeAtual)) < dijkstra.retornaCusto(aresta.getDestino())) {
-                    // Inserir lógica de "Relaxar" vértice
-                    continue;
+                if (soma < d.hashMenorCusto.get(arestaDestino)) {
+                    d.hashMenorCusto.put(arestaDestino, soma);
+                    d.filaDePrioridade.add(new Par(arestaDestino, d.hashMenorCusto.get(arestaDestino)));
                 }
             }
         }
+
     }
 }
