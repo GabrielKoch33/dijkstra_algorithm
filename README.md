@@ -6,4 +6,4 @@
    
 2. Clone este repositório:
    ```bash
-   git clone [https://github.c
+   git clone https://github.com/GabrielKoch33/dijkstra_algorithm.git
