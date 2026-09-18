@@ -1,7 +1,5 @@
 ## Versão JAVA utilizada: 21.
 
----
-
 ## Executar:
 
 1. Link Download JDK: https://www.oracle.com/java/technologies/downloads/#jdk21-windows
