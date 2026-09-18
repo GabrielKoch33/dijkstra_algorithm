@@ -1,4 +1,4 @@
-## Versão JAVA utilizada: 21.
+## Versão JAVA utilizada: 21
 
 ## Executar:
 
