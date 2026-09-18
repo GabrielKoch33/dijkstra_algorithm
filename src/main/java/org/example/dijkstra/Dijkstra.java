@@ -3,7 +3,6 @@ package org.example.dijkstra;
 import java.util.*;
 
 public class Dijkstra {
-
     private final Map<String,List<Aresta>> listaAdjacencia;
     private final Map<String, Long> tabelaCusto;
     private final Map<String, String> tabelaPredecessor;
@@ -14,11 +13,8 @@ public class Dijkstra {
         this.listaAdjacencia = new HashMap<>();
         this.tabelaCusto = new HashMap<>();
         this.tabelaPredecessor = new HashMap<>();
-        this.filaDePrioridade =
-                new PriorityQueue<>(Comparator.comparingLong(s -> this.tabelaCusto.get(s)));
         this.visitados = new HashSet<>();
-        // A primeira vez que um vértice SAI da fila pelo poll(),
-        // o custo dele até a origem está 100% garantido o MENOR CUSTO POSSÍVEL.
+        this.filaDePrioridade = new PriorityQueue<>(Comparator.comparingLong(s -> this.tabelaCusto.get(s)));
     }
     {
         this.aeroportos = new String[]{
@@ -29,10 +25,6 @@ public class Dijkstra {
         };
     }
     {
-        // Primeiros passos do algoritmo:
-        // 1 - Definir distância inicial para qualquer vértice do grafo como INFINITA (desconhecida).
-        // 2 - Definir um caminho 'desconhecido' para chegar em qualquer vértice, os valores ideais formariam a trilha para o menor custo.
-        // 3 - Adicionamos todos os vértices a fila, ela liberará o com menor custo, de início será o Vértice de Origem.
         for (String aeroporto : aeroportos) {
             this.tabelaCusto.put(aeroporto,1000000L);
             this.tabelaPredecessor.put(aeroporto,null);
@@ -40,8 +32,6 @@ public class Dijkstra {
         }
     }
     {
-        // chamar esse método aqui funciona, pois não depende de nenhum atributo de instância valorado
-        // (valor informado pelo usuário ou no construtor)
         adicionaListaAdj("NT1", new Aresta("NT2", 15));
         adicionaListaAdj("NT1", new Aresta("NORD1", 25));
         adicionaListaAdj("NT1", new Aresta("NORD5", 60));
@@ -93,22 +83,8 @@ public class Dijkstra {
     }
 
     public void adicionaListaAdj(String nomeVertice, Aresta aresta) {
-        // Adiciona conexão B em A
         this.listaAdjacencia.get(nomeVertice).add(aresta);
-        // Adiciona conexão A em B
         this.listaAdjacencia.get(aresta.getDestino()).add(new Aresta(nomeVertice, aresta.getCusto()));
-    }
-
-    public Long retornaCusto(String verticeAtual) {
-        return this.tabelaCusto.get(verticeAtual);
-    }
-
-    public void atualizaTabelaCusto(String nomeVertice, Long novoMenorCusto) {
-        this.tabelaCusto.replace(nomeVertice,novoMenorCusto);
-    }
-
-    public void atualizaTabelaPredecessor(String nomeVertice, String novoPai) {
-        this.tabelaPredecessor.put(nomeVertice,novoPai);
     }
 
     public void adicionaFilaPrioridade(String aeroporto) {
@@ -119,17 +95,27 @@ public class Dijkstra {
         this.visitados.add(verticeAtual);
     }
 
+    public void atualizaTabelaCusto(String nomeVertice, Long novoMenorCusto) {
+        this.tabelaCusto.replace(nomeVertice,novoMenorCusto);
+    }
+
+    public void atualizaTabelaPredecessor(String nomeVertice, String novoPai) {
+        this.tabelaPredecessor.put(nomeVertice,novoPai);
+    }
+
+    public Long retornaCusto(String verticeAtual) {
+        return this.tabelaCusto.get(verticeAtual);
+    }
+
     public void imprimeMenorCusto() {
         for (String chaveVertice : tabelaCusto.keySet()) {
-            System.out.println("VÉRTICE: " + chaveVertice +
-                               " | MENOR CUSTO: " + tabelaCusto.get(chaveVertice));
+            System.out.println("VÉRTICE: " + chaveVertice + " | MENOR CUSTO: " + tabelaCusto.get(chaveVertice));
         }
     }
 
     public void imprimePredecessores() {
         for (String chaveVertice : tabelaPredecessor.keySet()) {
-            System.out.println("VÉRTICE: " + chaveVertice +
-                               " | VERT. PREDECESSOR: " + tabelaPredecessor.get(chaveVertice));
+            System.out.println("VÉRTICE: " + chaveVertice + " | VERT. PREDECESSOR: " + tabelaPredecessor.get(chaveVertice));
         }
     }
 
@@ -139,7 +125,7 @@ public class Dijkstra {
             caminho.add(0,verticeAtual);
             verticeAtual = this.tabelaPredecessor.get(verticeAtual);
         }
-        return String.join(" -> ",caminho);
+        return String.join(" -> ", caminho);
     }
 
     public void imprimeVertices() {
@@ -147,7 +133,6 @@ public class Dijkstra {
             System.out.println(aeroporto);
         }
     }
-
 
     public static void main(String[] args) {
         Scanner lerInput = new Scanner(System.in);
@@ -163,25 +148,19 @@ public class Dijkstra {
         d.adicionaFilaPrioridade(verticeOrigem);
 
         while (!d.filaDePrioridade.isEmpty()) {
-            // Removemos o vértice de menor custo
             String verticeAtual = d.filaDePrioridade.poll();
             if (verticeAtual.equals(verticeDestino)){
                 break;
             }
-            // Um mesmo vértice pode entrar na PQ várias vezes, porém apenas quando é dado poll que tiramos ele para explorar
             if (!d.visitados.contains(verticeAtual)) {
                 d.adicionaVisitados(verticeAtual);
             } else {
                 continue;
             }
-
-            // Acessamos os vizinhos desse vértice que acabamos de remover para encontrar o próximo vértice de menor custo
             for (Aresta aresta : d.listaAdjacencia.get(verticeAtual)) {
                 String verticeVizinho = aresta.getDestino();
                 Long somaPeso = d.retornaCusto(verticeAtual) + aresta.getCusto();
-
-                // Um vértice já visitado já estará com o menor custo possível, verificar seu custo é perda de tempo
-                if (somaPeso < d.retornaCusto(verticeVizinho) && !d.visitados.contains(verticeVizinho)) {
+                if (somaPeso < d.retornaCusto(verticeVizinho) && (!d.visitados.contains(verticeVizinho))) {
                     d.atualizaTabelaCusto(verticeVizinho,somaPeso);
                     d.atualizaTabelaPredecessor(verticeVizinho, verticeAtual);
                     d.adicionaFilaPrioridade(verticeVizinho);
@@ -190,7 +169,5 @@ public class Dijkstra {
         }
         System.out.println("O custo para chegar em " + verticeDestino + " é: " + d.retornaCusto(verticeDestino));
         System.out.println(d.imprimeCaminhoCompleto(verticeDestino));
-        //d.imprimePredecessores();
-        //d.imprimeMenorCusto();
     }
 }
