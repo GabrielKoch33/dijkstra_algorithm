@@ -1,4 +1,6 @@
-* **Java** (Versão mínima: 21)
+## Versão JAVA utilizada: 21.
+
+---
 
 ## Executar:
 
