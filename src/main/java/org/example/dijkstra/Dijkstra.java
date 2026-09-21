@@ -36,10 +36,6 @@ public class Dijkstra {
         adicionaListaAdj("NT1", new Aresta("NORD1", 25));
         adicionaListaAdj("NT1", new Aresta("NORD5", 60));
         adicionaListaAdj("NT1", new Aresta("CENT2", 28));
-        adicionaListaAdj("NT1", new Aresta("NT2", 15));
-        adicionaListaAdj("NT1", new Aresta("NORD1", 25));
-        adicionaListaAdj("NT1", new Aresta("NORD5", 60));
-        adicionaListaAdj("NT1", new Aresta("CENT2", 28));
         adicionaListaAdj("NT1", new Aresta("SUD1", 50));
         adicionaListaAdj("NT2", new Aresta("NORD1", 40));
         adicionaListaAdj("NT2", new Aresta("CENT2", 30));
