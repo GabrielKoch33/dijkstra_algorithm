@@ -133,12 +133,23 @@ public class Dijkstra {
     public static void main(String[] args) {
         Scanner lerInput = new Scanner(System.in);
         Dijkstra d = new Dijkstra();
+        String verticeOrigem;
+        String verticeDestino;
 
         d.imprimeVertices();
-        System.out.println("Digite um ponto de partida: ");
-        String verticeOrigem = lerInput.nextLine().toUpperCase();
-        System.out.println("Digite um ponto de chegada: ");
-        String verticeDestino = lerInput.nextLine().toUpperCase();
+        while (true) {
+            System.out.println("============================");
+            System.out.print("Digite um ponto de partida\nR: ");
+            verticeOrigem = lerInput.nextLine().toUpperCase();
+            System.out.print("Digite um ponto de chegada\nR: ");
+            verticeDestino = lerInput.nextLine().toUpperCase();
+            System.out.println("============================");
+            if (!d.tabelaCusto.containsKey(verticeOrigem) || !d.tabelaCusto.containsKey(verticeDestino)) {
+                System.out.println("Informe valores válidos!");
+               continue;
+            }
+            break;
+        }
 
         d.atualizaTabelaCusto(verticeOrigem, 0L);
         d.adicionaFilaPrioridade(verticeOrigem);
@@ -163,7 +174,7 @@ public class Dijkstra {
                 }
             }
         }
-        System.out.println("O custo para chegar em " + verticeDestino + " é: " + d.retornaCusto(verticeDestino));
+        System.out.println("O custo para chegar em " + verticeDestino + ", partindo de " + verticeOrigem + ", é: " + d.retornaCusto(verticeDestino));
         System.out.println(d.imprimeCaminhoCompleto(verticeDestino));
     }
 }
