@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Dijkstra {
     private final Map<String,List<Aresta>> listaAdjacencia;
-    private final Map<String, Long> tabelaCusto;
-    private final Map<String, String> tabelaPredecessor;
+    private final Map<String,Long> tabelaCusto;
+    private final Map<String,String> tabelaPredecessor;
     private final PriorityQueue<String> filaDePrioridade;
     private final Set<String> visitados;
-    private String[] aeroportos;
+    private final String[] aeroportos;
     {
         this.listaAdjacencia = new HashMap<>();
         this.tabelaCusto = new HashMap<>();
@@ -99,8 +99,43 @@ public class Dijkstra {
         this.tabelaPredecessor.put(nomeVertice,novoPai);
     }
 
+    public String removeFilaPrioridade() {
+        return filaDePrioridade.poll();
+    }
+
     public Long retornaCusto(String verticeAtual) {
         return this.tabelaCusto.get(verticeAtual);
+    }
+
+    public List<Aresta> verticeAtual(String verticeAtual) {
+        return this.listaAdjacencia.get(verticeAtual);
+    }
+
+    public boolean existeVertice(String vertice) {
+        return this.tabelaCusto.containsKey(vertice);
+    }
+
+    public boolean filaPrioridadeIsEmpty() {
+        return this.filaDePrioridade.isEmpty();
+    }
+
+    public boolean jaFoiVisitado(String verticeAtual) {
+        return this.visitados.contains(verticeAtual);
+    }
+
+    public String imprimeCaminhoCompleto (String verticeAtual) {
+        List<String> caminho = new LinkedList<>();
+        while (verticeAtual != null) {
+            caminho.addFirst(verticeAtual);
+            verticeAtual = this.tabelaPredecessor.get(verticeAtual);
+        }
+        return String.join(" -> ", caminho);
+    }
+
+    public void imprimeVertices() {
+        for (String aeroporto : aeroportos) {
+            System.out.println(aeroporto);
+        }
     }
 
     public void imprimeMenorCusto() {
@@ -113,68 +148,5 @@ public class Dijkstra {
         for (String chaveVertice : tabelaPredecessor.keySet()) {
             System.out.println("VÉRTICE: " + chaveVertice + " | VERT. PREDECESSOR: " + tabelaPredecessor.get(chaveVertice));
         }
-    }
-
-    public String imprimeCaminhoCompleto (String verticeAtual) {
-        List<String> caminho = new ArrayList<>();
-        while (verticeAtual != null) {
-            caminho.add(0,verticeAtual);
-            verticeAtual = this.tabelaPredecessor.get(verticeAtual);
-        }
-        return String.join(" -> ", caminho);
-    }
-
-    public void imprimeVertices() {
-        for (String aeroporto : aeroportos) {
-            System.out.println(aeroporto);
-        }
-    }
-
-    public static void main(String[] args) {
-        Scanner lerInput = new Scanner(System.in);
-        Dijkstra d = new Dijkstra();
-        String verticeOrigem;
-        String verticeDestino;
-
-        d.imprimeVertices();
-        while (true) {
-            System.out.println("============================");
-            System.out.print("Digite um ponto de partida\nR: ");
-            verticeOrigem = lerInput.nextLine().toUpperCase();
-            System.out.print("Digite um ponto de chegada\nR: ");
-            verticeDestino = lerInput.nextLine().toUpperCase();
-            System.out.println("============================");
-            if (!d.tabelaCusto.containsKey(verticeOrigem) || !d.tabelaCusto.containsKey(verticeDestino)) {
-                System.out.println("Informe valores válidos!");
-               continue;
-            }
-            break;
-        }
-
-        d.atualizaTabelaCusto(verticeOrigem, 0L);
-        d.adicionaFilaPrioridade(verticeOrigem);
-
-        while (!d.filaDePrioridade.isEmpty()) {
-            String verticeAtual = d.filaDePrioridade.poll();
-            if (verticeAtual.equals(verticeDestino)){
-                break;
-            }
-            if (!d.visitados.contains(verticeAtual)) {
-                d.adicionaVisitados(verticeAtual);
-            } else {
-                continue;
-            }
-            for (Aresta aresta : d.listaAdjacencia.get(verticeAtual)) {
-                String verticeVizinho = aresta.getDestino();
-                Long somaPeso = d.retornaCusto(verticeAtual) + aresta.getCusto();
-                if (somaPeso < d.retornaCusto(verticeVizinho) && (!d.visitados.contains(verticeVizinho))) {
-                    d.atualizaTabelaCusto(verticeVizinho,somaPeso);
-                    d.atualizaTabelaPredecessor(verticeVizinho, verticeAtual);
-                    d.adicionaFilaPrioridade(verticeVizinho);
-                }
-            }
-        }
-        System.out.println("O custo para chegar em " + verticeDestino + ", partindo de " + verticeOrigem + ", é: " + d.retornaCusto(verticeDestino));
-        System.out.println(d.imprimeCaminhoCompleto(verticeDestino));
     }
 }
