@@ -1,6 +1,5 @@
 package org.example.binarytree;
 
-import javax.swing.plaf.basic.BasicTextAreaUI;
 import java.util.Scanner;
 
 public class Main {
@@ -51,7 +50,7 @@ public class Main {
                     arvore.contemValor(valorUser);
                 }
                 case 4 -> {
-                    arvore.folhas();
+                    arvore.folhas(arvore.getRoot());
                 }
                 case 5 -> {
                     arvore.alturaArvore();

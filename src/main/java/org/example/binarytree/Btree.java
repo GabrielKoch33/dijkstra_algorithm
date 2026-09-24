@@ -63,8 +63,15 @@ public class Btree {
         System.out.print(node.getValue()+" - ");
     }
 
-    public void folhas() {
-
+    public void folhas(Node node) {
+        if (node == null) {
+            return;
+        }
+        if (node.getLeftNode() == null && node.getRigthNode() == null) {
+            System.out.println(node.getValue());
+        }
+        folhas(node.getLeftNode());
+        folhas(node.getRigthNode());
     }
 
     public int alturaArvore() {
