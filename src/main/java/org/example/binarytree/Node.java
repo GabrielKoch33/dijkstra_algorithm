@@ -1,24 +1,35 @@
 package org.example.binarytree;
 
 public class Node {
-    private Node nodeEsquerdo;
-    private Node nodeDireito;
-    private Node nodePai;
-    private int valor;
+    private Node leftNode;
+    private Node rigthNode;
+    private Node parentNode;
+    private int value;
 
-    public int getValor()  {
-        return this.valor;
+    public Node(Node left, Node right, Node parent, int value) {
+        this.leftNode = left;
+        this.rigthNode = right;
+        this.parentNode = parent;
+        this.value = value;
     }
 
-    public Node getNodeEsquerdo() {
-        return this.nodeEsquerdo;
+    public void setValue(int value) {
+        this.value = value;
     }
 
-    public Node getNodeDireito() {
-        return this.nodeDireito;
+    public Node getLeftNode() {
+        return leftNode;
     }
 
-    public Node getNodePai() {
-        return this.nodePai;
+    public Node getRigthNode() {
+        return rigthNode;
+    }
+
+    public Node getParentNode() {
+        return parentNode;
+    }
+
+    public int getValue() {
+        return value;
     }
 }
