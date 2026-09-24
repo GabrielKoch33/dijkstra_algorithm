@@ -10,6 +10,7 @@ public class Main {
         int opcao;
         int valorUser;
         while (true) {
+            System.out.println("===============================================================");
             System.out.println("[1] - Inserir nó em uma árvore");
             System.out.println("[2] - Excluir nó de uma árvore");
             System.out.println("[3] - Verificar se um elemento pertence à árvore;");
@@ -20,46 +21,61 @@ public class Main {
             System.out.println("[8] - Percorrer árvore (Pré-Ordem)");
             System.out.println("[9] - Percorrer árvore (In-Ordem)");
             System.out.println("[10] - Percorrer árvore (Pós-Ordem)");
-            opcao = input.nextInt();
-            if (opcao < 1 || opcao > 10) {
-                continue;
+            System.out.println("[0] - Sair");
+            System.out.println("===============================================================");
+            while (true) {
+                System.out.print("Informe uma opção\nR: ");
+                opcao = input.nextInt();
+                if (opcao < 0 || opcao > 10) {
+                    continue;
+                }
+                break;
             }
-            break;
-        }
-        switch (opcao) {
-            case 1 -> {
-                valorUser = input.nextInt();
-                arvore.inserirValor(valorUser);
+            if (opcao == 0) {
+                break;
             }
-            case 2 -> {
-                valorUser = input.nextInt();
-                arvore.removerValor(valorUser);
-            }
-            case 3 -> {
-                valorUser = input.nextInt();
-                arvore.contemValor(valorUser);
-            }
-            case 4 -> {
-                arvore.folhas();
-            }
-            case 5 -> {
-                arvore.alturaArvore();
-            }
-            case 6 -> {
-                valorUser = input.nextInt();
-                arvore.nivelDoValor(valorUser);
-            }
-            case 7 -> {
-                arvore.isComplete();
-            }
-            case 8 -> {
-                arvore.preOrdem();
-            }
-            case 9 -> {
-                arvore.inOrdem();
-            }
-            case 10 -> {
-                arvore.posOrdem();
+            switch (opcao) {
+                case 1 -> {
+                    System.out.print("Informe um valor para inserir\nR: ");
+                    valorUser = input.nextInt();
+                    arvore.inserirValor(valorUser);
+                }
+                case 2 -> {
+                    System.out.print("Informe um valor para remover\nR: ");
+                    valorUser = input.nextInt();
+                    arvore.removerValor(valorUser);
+                }
+                case 3 -> {
+                    System.out.print("Informe um valor para conferir\nR: ");
+                    valorUser = input.nextInt();
+                    arvore.contemValor(valorUser);
+                }
+                case 4 -> {
+                    arvore.folhas();
+                }
+                case 5 -> {
+                    arvore.alturaArvore();
+                }
+                case 6 -> {
+                    System.out.print("Informe um valor e descubra o nível do mesmo\nR: ");
+                    valorUser = input.nextInt();
+                    arvore.nivelDoValor(valorUser);
+                }
+                case 7 -> {
+                    arvore.isComplete();
+                }
+                case 8 -> {
+                    arvore.preOrdem(arvore.getRoot());
+                    System.out.println();
+                }
+                case 9 -> {
+                    arvore.inOrdem(arvore.getRoot());
+                    System.out.println();
+                }
+                case 10 -> {
+                    arvore.posOrdem(arvore.getRoot());
+                    System.out.println();
+                }
             }
         }
     }

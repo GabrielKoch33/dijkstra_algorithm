@@ -8,20 +8,23 @@ public class Btree {
     }
 
     public void inserirValor(int valor) {
-        percorreLado(root, valor);
+        this.root = percorreLado(root, null, valor);
         System.out.println(valor+" inserido!");
     }
 
-    private void percorreLado(Node node, int valor) {
+    private Node percorreLado(Node node, Node nodePai, int valor) {
         if (node == null) {
-            node = new Node(null, null, null, valor);
-            return;
+            return new Node(null, null, nodePai, valor);
         }
+        nodePai = node;
         if (valor < node.getValue()) {
-            percorreLado(node.getLeftNode(), valor);
+            node.setLeftNode(percorreLado(node.getLeftNode(), nodePai, valor));
+            return node;
         } else if (valor > node.getValue()) {
-            percorreLado(node.getRigthNode(), valor);
+            node.setRightNode(percorreLado(node.getRigthNode(), nodePai, valor));
+            return node;
         }
+        return node; // quando o valor já existe, o próprio nó já é devolvido para o de cima
     }
 
     public void removerValor(int valor) {
@@ -32,16 +35,32 @@ public class Btree {
         return false;
     }
 
-    public void preOrdem() {
+    public void preOrdem(Node node) {
+        if (node == null) {
+            return;
+        }
+        System.out.print(node.getValue()+" - ");
+        preOrdem(node.getLeftNode());
+        preOrdem(node.getRigthNode());
 
     }
 
-    public void inOrdem() {
-
+    public void inOrdem(Node node) {
+        if (node == null) {
+            return;
+        }
+        inOrdem(node.getLeftNode());
+        System.out.print(node.getValue()+" - ");
+        inOrdem(node.getRigthNode());
     }
 
-    public void posOrdem() {
-
+    public void posOrdem(Node node) {
+        if (node == null) {
+            return;
+        }
+        posOrdem(node.getLeftNode());
+        posOrdem(node.getRigthNode());
+        System.out.print(node.getValue()+" - ");
     }
 
     public void folhas() {
@@ -58,5 +77,9 @@ public class Btree {
 
     public boolean isComplete() {
         return false;
+    }
+
+    public Node getRoot() {
+        return root;
     }
 }
